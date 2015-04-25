@@ -43,6 +43,14 @@ interface IDriver
 
 
 	/**
+	 * Saves database dump to a file.
+	 * @param  string $path
+	 * @return void
+	 */
+	function saveFile($path);
+
+
+	/**
 	 * Starts transaction.
 	 */
 	function beginTransaction();

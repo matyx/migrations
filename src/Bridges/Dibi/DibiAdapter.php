@@ -27,6 +27,12 @@ class DibiAdapter implements IDbal
 	}
 
 
+	public function getConnection()
+	{
+		return $this->conn;
+	}
+
+
 	public function query($sql)
 	{
 		$result = $this->conn->nativeQuery($sql);
