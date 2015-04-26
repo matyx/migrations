@@ -22,6 +22,7 @@ class MigrationsExtension extends Nette\DI\CompilerExtension
 		'phpParams' => [],
 		'driver' => NULL,
 		'dbal' => NULL,
+		'tempDir' => NULL,
 	];
 
 	/** @var array */
@@ -49,12 +50,13 @@ class MigrationsExtension extends Nette\DI\CompilerExtension
 		$config = $this->validateConfig($this->defaults);
 		Validators::assertField($config, 'dir', 'string');
 		Validators::assertField($config, 'phpParams', 'array');
+		Validators::assertField($config, 'tempDir', 'string|null');
 
 		$driver = $this->getDriver($config['driver'], $config['dbal']);
 		$driver = $builder->addDefinition($this->prefix('driver'))
 			->setFactory($driver);
 
-		$params = [$driver, $config['dir'], $config['phpParams']];
+		$params = [$driver, $config['dir'], $config['phpParams'], $config['tempDir']];
 		$builder->addDefinition($this->prefix('continueCommand'))
 			->setClass('Nextras\Migrations\Bridges\SymfonyConsole\ContinueCommand')
 			->setArguments($params)

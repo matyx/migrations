@@ -29,18 +29,23 @@ abstract class BaseCommand extends Command
 	/** @var array */
 	private $phpParams;
 
+	/** @var string|NULL */
+	private $tempDir;
+
 
 	/**
 	 * @param  IDriver $driver
 	 * @param  string  $dir
 	 * @param  array   $phpParams (name => value)
+	 * @param  string  $tempDir
 	 */
-	public function __construct(IDriver $driver, $dir, $phpParams = [])
+	public function __construct(IDriver $driver, $dir, $phpParams = [], $tempDir = NULL)
 	{
 		parent::__construct();
 		$this->driver = $driver;
 		$this->dir = $dir;
 		$this->phpParams = $phpParams;
+		$this->tempDir = $tempDir;
 	}
 
 
@@ -52,7 +57,7 @@ abstract class BaseCommand extends Command
 	protected function runMigrations($mode, $withDummy)
 	{
 		$printer = $this->getPrinter();
-		$runner = new Runner($this->driver, $printer);
+		$runner = new Runner($this->driver, $printer, $this->tempDir);
 
 		foreach ($this->getGroups($withDummy) as $group) {
 			$runner->addGroup($group);
